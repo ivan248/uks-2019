@@ -21,6 +21,8 @@ services:
       - ./static:/code/vsc_app/static #must be same as nginx!
     depends_on:
       - db
+      - es
+      - kibana
 
 # Nginx as a web server and reverse proxy
   nginx:
@@ -45,4 +47,38 @@ services:
       - "50000:50000"
     user: root
 
-
+# ELK stack for logging
+# For searching and indexing data
+  es:
+    image: elasticsearch:5.4
+    container_name: vsc_app_es
+    volumes:
+      - ./esdata:/usr/share/elasticsearch/data/
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+# Data visualisation and for log aggregation
+  kibana:
+    image: kibana:5.4.3
+    container_name: vsc_app_kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_URL=http://es:9200
+    depends_on:
+      - es
+# For logging data
+  logstash:
+    image: logstash:5.4.3
+    container_name: vsc_app_logstash
+    volumes:
+      - ./config/logstash:/logstash_dir
+    command: logstash -f /logstash_dir/logstash.conf
+    depends_on:
+      - es
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    ports:
+      - "5959:5959"
