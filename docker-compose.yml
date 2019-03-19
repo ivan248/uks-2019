@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  db:
+    restart: always
+    container_name: vsc_app_db
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "8001:5432"
+    image: postgres
+
+  web:
+    container_name: vsc_app_web
+    image: ivanjancic/vsc_app
+    build: .
+    command: ["./wait_for_postgres.sh"]
+    expose:
+      - 8000
+    volumes:
+      - ./static:/code/vsc_app/static #must be same as nginx!
+    depends_on:
+      - db
+
+# Nginx as a web server and reverse proxy
+  nginx:
+    image: nginx
+    container_name: vsc_app_nginx
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d
+      - ./static:/code/vsc_app/static #must be same as web!
+    depends_on:
+      - web
+
+  jenkins:
+    image: jenkins
+    container_name: vsc_app_jenkins
+    volumes: 
+      - /var/jenkins_home:/var/jenkins_home
+    ports:
+      - "8080:8080"
+      - "5000:5000"
+      - "50000:50000"
+    user: root
+
+
