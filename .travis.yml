@@ -19,9 +19,6 @@ install:
 before_install:
   - docker --version
   - docker-compose up -d
-  - docker exec -it vsc_app_web /bin/bash
-  - python manage.py test vsc
-  - exit
   - docker images
   - docker ps -a
 
