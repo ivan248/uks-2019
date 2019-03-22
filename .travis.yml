@@ -2,10 +2,6 @@ language: python
 python:
   - "2.7"
 
-addons:
-  apt:
-    packages:
-    - sshpass
 services:
   - docker
 
@@ -17,12 +13,9 @@ install:
 # - python manage.py test vsc
 
 before_install:
-  - docker --version
   - docker-compose up -d
   - docker images
   - docker ps -a
 
-after_success:
-  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-  - docker push $DOCKER_USERNAME/vsc_app:latest
+
 
