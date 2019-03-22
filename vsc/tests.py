@@ -5,7 +5,7 @@ from django.test import TestCase
 
 # Create your tests here.
 def fun(x):
-    return x + 1
+    return x + 2
 
 class MyTest(TestCase):
 

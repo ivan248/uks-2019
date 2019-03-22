@@ -14,6 +14,7 @@ install:
 
 script:
   - docker-compose up -d
+  - docker logs vsc_app_web
   - docker images
   - docker ps -a
 
