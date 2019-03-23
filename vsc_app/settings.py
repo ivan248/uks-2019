@@ -54,7 +54,8 @@ MIDDLEWARE = [
 ]
 
 
-_URLCONF = 'vsc_app.urls'
+ROOT_URLCONF = 'vsc_app.urls'
+
 
 TEMPLATES = [
     {
