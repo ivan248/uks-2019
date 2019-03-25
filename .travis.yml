@@ -18,5 +18,10 @@ script:
   - docker images
   - docker ps -a
 
+deploy:
+  provider: script
+  script: bash docker_push
+  on:
+    branch: master
 
 

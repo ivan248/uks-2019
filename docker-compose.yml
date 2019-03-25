@@ -36,17 +36,6 @@ services:
     depends_on:
       - web
 
-  jenkins:
-    image: jenkins
-    container_name: vsc_app_jenkins
-    volumes: 
-      - /var/jenkins_home:/var/jenkins_home
-    ports:
-      - "8080:8080"
-      - "5000:5000"
-      - "50000:50000"
-    user: root
-
 # ELK stack for logging
 # For searching and indexing data
   es:
@@ -82,3 +71,33 @@ services:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     ports:
       - "5959:5959"
+
+#TICK stack
+#Metrics and grafana for visualisation
+
+  influxdb:
+    container_name: vsc_app_influxdb
+    image: influxdb:1.0.2
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+    volumes:
+      - ./influxdb:/var/lib/influxdb
+    restart: always
+
+  grafana:
+    container_name: vsc_app_grafana
+    image: grafana/grafana:4.3.2
+    ports:
+      - "3000:3000"
+    links:
+      - influxdb
+    restart: always
+
+  telegraf:
+    container_name: vsc_app_telegraf
+    image: telegraf:1.3.3
+    volumes:
+      - ./config/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
