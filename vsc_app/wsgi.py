@@ -1,5 +1,5 @@
 """
-WSGI config for vsc_app project.
+WSGI config for vsc_app vsc.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

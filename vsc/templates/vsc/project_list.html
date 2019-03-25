@@ -1,0 +1,28 @@
+{% extends 'vsc/base.html' %}
+
+{% block content %}
+<h1> Projects</h1>
+<div>
+    {% if projects %}
+        <ul class="list-group">
+        {% for project in projects %}
+            <li class="list-group-item list-group-item-success" >
+                <a class="btn btn-link" href="/vsc/projects/{{ project.id }}">{{ project.name }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No projects are available.</p>
+    {% endif %}
+    <hr>
+
+    <h3>Create project</h3>
+
+    <form action="{% url 'vsc:project_create'%}" method="post">
+        {% csrf_token %}
+        <label>Enter project name</label><br />
+        <input type="text" name="project_name" value="" />
+        <input type="submit" value="Create"/>
+    </form>
+</div>
+{% endblock %}

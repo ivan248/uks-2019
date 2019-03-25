@@ -1,0 +1,44 @@
+{% extends 'vsc/base.html' %}
+
+{% block content %}
+
+<h1><span class="text-success">{{branch.name}} </span> <span class="font-italic text-info"> [{{project.name}}] </span> </h1>
+
+
+<form action="{% url 'vsc:branch_update' project.id branch.id %}" method="post">
+    {% csrf_token %}
+    <label>Enter new branch name</label><br />
+    <input type="text" name="branch_name" value="" />
+    <input type="submit" value="Update branch"/>
+</form>
+
+<hr>
+
+<form action="{% url 'vsc:branch_delete' project.id branch.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete branch"/>
+</form>
+<hr>
+
+<div>
+    <h2>Commits</h2>
+    {% if commits %}
+    <ul class="list-group">
+        {% for commit in commits %}
+            <li class="list-group-item list-group-item-success" >
+                <a class="btn btn-link float-right" href="/vsc/projects/{{ project.id }}/branches/{{ branch.id }}/commits/{{ commit.id }}">{{ commit.hash }}</a>
+                <p > {{commit.message}}</p>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <hr>
+    <form action="{% url 'vsc:commit_create' project.id branch.id %}" method="post">
+        {% csrf_token %}
+        <label>Enter new commit message</label><br />
+        <input type="textarea" name="commit_message" value="" />
+        <input type="submit" value="Create commit"/>
+    </form>
+
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'vsc/base.html' %}
+
+{% block content %}
+
+<h1>Project: {{project.name}} </h1>
+
+<form action="{% url 'vsc:project_update' project.id %}" method="post">
+    {% csrf_token %}
+    <label>Enter new name</label><br />
+    <input type="text" name="project_name" value="" />
+    <input type="submit" value="Update"/>
+</form>
+
+<hr>
+
+<form action="{% url 'vsc:project_add_member' project.id %}" method="post">
+    {% csrf_token %}
+    <label>Enter new member email</label><br />
+    <input type="text" name="member_email" value="" />
+    <input type="submit" value="Add member"/>
+</form>
+
+<hr>
+
+<form action="{% url 'vsc:project_delete' project.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete project"/>
+</form>
+<hr>
+
+{% if branches %}
+<div>
+    <h3>Branches</h3>
+
+    <ul class="list-group">
+        {% for branch in branches %}
+            <li class="list-group-item list-group-item-success" >
+                <a class="btn btn-link" href="/vsc/projects/{{ project.id }}/branches/{{ branch.id }}">{{ branch.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <hr>
+
+    <form action="{% url 'vsc:branch_create' project.id %}" method="post">
+        {% csrf_token %}
+        <label>Enter new branch name</label><br />
+        <input type="text" name="branch_name" value="" />
+        <input type="submit" value="Create branch"/>
+    </form>
+
+</div>
+{% endif %}
+{% endblock %}

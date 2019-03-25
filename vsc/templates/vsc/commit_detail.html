@@ -1,0 +1,32 @@
+{% extends 'vsc/base.html' %}
+
+{% block content %}
+
+<h2><span class="text-success">Commit </span>  </h2>
+<hr>
+    <h6> hash: <span class="text-primary float-right">{{commit.hash}} </span>  </h6>
+    <h6> project: <span class="text-primary float-right">{{project.name}} </span> </h6>
+    <h6> branch: <span class="text-primary float-right">{{branch.name}} </span> </h6>
+    <h6> user: <span class="text-primary float-right">{{commit.user.username}} </span> </h6>
+    <h6> created: <span class="text-primary float-right">{{commit.creation_date}} </span> </h6>
+<hr>
+
+<h4> Message </h4>
+<h4 class="text-success"> {{commit.message}}</h4>
+
+<hr>
+
+<form action="{% url 'vsc:commit_update' project.id branch.id commit.id %}" method="post">
+    {% csrf_token %}
+    <label>Enter new commit message</label><br />
+    <input type="text" name="commit_message" value="" />
+    <input type="submit" value="Update"/>
+</form>
+
+<hr>
+
+<form action="{% url 'vsc:commit_delete' project.id branch.id commit.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Drop commit"/>
+</form>
+{% endblock %}
