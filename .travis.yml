@@ -17,6 +17,7 @@ script:
   - docker logs vsc_app_web
   - docker images
   - docker ps -a
+  - bash starttest.sh
 
 deploy:
   provider: script
