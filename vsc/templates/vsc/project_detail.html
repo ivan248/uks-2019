@@ -28,10 +28,11 @@
 </form>
 <hr>
 
-{% if branches %}
-<div>
-    <h3>Branches</h3>
 
+<div>
+
+    <h3>Branches</h3>
+    {% if branches %}
     <ul class="list-group">
         {% for branch in branches %}
             <li class="list-group-item list-group-item-success" >
@@ -39,6 +40,7 @@
             </li>
         {% endfor %}
     </ul>
+    {% endif %}
     <hr>
 
     <form action="{% url 'vsc:branch_create' project.id %}" method="post">
@@ -49,5 +51,4 @@
     </form>
 
 </div>
-{% endif %}
 {% endblock %}
