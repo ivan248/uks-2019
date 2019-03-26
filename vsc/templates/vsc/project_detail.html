@@ -13,12 +13,29 @@
 
 <hr>
 
-<form action="{% url 'vsc:project_add_member' project.id %}" method="post">
-    {% csrf_token %}
-    <label>Enter new member email</label><br />
-    <input type="text" name="member_email" value="" />
-    <input type="submit" value="Add member"/>
-</form>
+<div>
+    <h3>Members </h3>
+    {% if members %}
+    <ul class="list-group">
+        {% for member in members %}
+            <li class="list-group-item list-group-item-success" >
+               {{ member }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <hr>
+
+    <form action="{% url 'vsc:project_add_member' project.id %}" method="post">
+        {% csrf_token %}
+        <label>Enter new member email</label><br />
+        <input type="text" name="member_email" value="" />
+        <input type="submit" value="Add member"/>
+    </form>
+
+
+</div>
+
 
 <hr>
 
