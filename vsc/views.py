@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.crypto import get_random_string
 import datetime
 
-from .models import Project, ProjectMembership, Branch, Commit, User, CurrentUser
+from .models import Project, ProjectMembership, Branch, Commit, User, CurrentUser, Issue, IssueAssignments, Milestone
 
 
 def index(request):
@@ -61,6 +61,7 @@ def project_detail(request, project_id):
     project = Project.objects.get(id=project_id)
     template = loader.get_template('vsc/project_detail.html')
     branches = Branch.objects.filter(project=project)
+    issues = Issue.objects.filter(project=project)
 
     projectMemberships = ProjectMembership.objects.filter(project = project.id)
     members = []
@@ -71,7 +72,8 @@ def project_detail(request, project_id):
     context = {
         'project': project,
         'branches': branches,
-        'members': members
+        'members': members,
+        'issues': issues
     }
     return HttpResponse(template.render(context, request))
 
@@ -201,3 +203,60 @@ def commit_delete(request, project_id, branch_id, commit_id):
         return HttpResponseRedirect(
             reverse('vsc:branch_detail',kwargs={'project_id':project_id, 'branch_id': branch_id})
         )
+
+def issue_detail(request, project_id, issue_id):
+
+    project = Project.objects.get(id=project_id)
+    issue = Issue.objects.get(id=issue_id)
+    template = loader.get_template('vsc/issue_detail.html')
+    milestones = Milestone.objects.filter(issue=issue)
+    # labels = Commit.objects.filter(branch=branch)
+    # assignees
+    context = {
+        'project': project,
+        'issue': issue,
+        'milestones': milestones
+    }
+    return HttpResponse(template.render(context, request))
+
+def issue_create(request, project_id):
+    issue_name = request.POST['issue_name']
+    issue_description = request.POST['issue_description']
+    p = get_object_or_404(Project, id=project_id)
+    issue = Issue(name=issue_name, description=issue_description, project=p)
+    issue.save()
+    return HttpResponseRedirect(reverse('vsc:project_detail', kwargs={'project_id':project_id}))
+
+def issue_update(request, project_id, issue_id):
+    if request.method == 'POST':
+        issue_name = request.POST['issue_name']
+        issue_description = request.POST['issue_description']
+        issue = Issue.objects.get(id=issue_id)
+        issue.name = issue_name
+        issue.description = issue_description
+        issue.save()
+        return HttpResponseRedirect(
+            reverse('vsc:project_detail', kwargs={'project_id':project_id})
+        )
+
+def issue_delete(request, project_id, issue_id):
+
+    if request.method == 'POST':
+        Issue.objects.filter(id=issue_id).delete()
+        return HttpResponseRedirect(reverse('vsc:project_detail',kwargs={'project_id':project_id}))
+
+
+def milestone_create(request, project_id, issue_id):
+    milestone_name = request.POST['milestone_name']
+    milestone_description = request.POST['milestone_description']
+    i = get_object_or_404(Issue, id=issue_id)
+    milestone = Milestone(
+        name=milestone_name,
+        description=milestone_description,
+        due_date=datetime.datetime.now(),
+        issue=i
+    )
+    milestone.save()
+    return HttpResponseRedirect(
+        reverse('vsc:issue_detail', kwargs={'project_id': project_id, 'issue_id': issue_id})
+    )

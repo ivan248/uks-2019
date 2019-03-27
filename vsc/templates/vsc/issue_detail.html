@@ -1,0 +1,64 @@
+{% extends 'vsc/base.html' %}
+
+{% block content %}
+
+<h1><span class="text-success">{{issue.name}} </span> <span class="font-italic text-info"> [{{project.name}}] </span> </h1>
+
+<hr>
+
+<h4> Description </h4>
+<h4 class="text-success"> {{issue.description}}</h4>
+
+<hr>
+
+<form action="{% url 'vsc:issue_update' project.id issue.id %}" method="post">
+    {% csrf_token %}
+    <label>Enter new issue name</label><br />
+    <input type="text" name="issue_name" value="" /> <br>
+
+    <label>Enter new issue description</label><br />
+    <input type="text" name="issue_description" value="" /> <br />
+
+    <input type="submit" value="Update issue"/>
+</form>
+
+<hr>
+
+<form action="{% url 'vsc:issue_delete' project.id issue.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete issue"/>
+</form>
+<hr>
+
+<div>
+    <h2>Milestones</h2>
+
+    {% if milestones %}
+    <ul class="list-group">
+        {% for milestone in milestones %}
+            <li class="list-group-item list-group-item-success" >
+                <a class="btn btn-link float-right" href="/vsc/projects/{{ project.id }}/issues/{{ issue.id }}/milestones/{{ milestone.id }}">{{ milestone.name }}</a>
+                <p > {{milestone.description}}</p>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <hr>
+    <form action="{% url 'vsc:milestone_create' project.id issue.id %}" method="post">
+        {% csrf_token %}
+        <label>Enter new milestone name</label><br />
+        <input type="textarea" name="milestone_name" value="" /> <br />
+
+        <label>Enter new milestone description</label><br />
+        <input type="textarea" name="milestone_description" value="" /> <br />
+
+        <input type="submit" value="Create milestone"/>
+    </form>
+</div>
+
+<div>
+    <h2>Labels</h2>
+
+
+</div>
+{% endblock %}

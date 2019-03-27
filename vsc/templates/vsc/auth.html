@@ -1,0 +1,35 @@
+{% extends 'vsc/base.html' %}
+
+{% block content %}
+
+<h1> Login</h1>
+
+<form action="{% url 'vsc:login'  %}" method="post">
+    {% csrf_token %}
+    <label> Email</label><br />
+    <input type="text" name="email" value="" />
+
+    <label>Password</label><br />
+    <input type="password" name="password" value="" />
+
+
+    <input type="submit" value="Login"/>
+</form>
+<hr>
+
+<h1> Register</h1>
+
+<form action="{% url 'vsc:register'  %}" method="post">
+    {% csrf_token %}
+    <label> Email</label><br />
+    <input type="text" name="email_reg" value="" />
+
+    <label>Password</label><br />
+    <input type="password" name="password_reg" value="" />
+
+
+    <input type="submit" value="Login"/>
+</form>
+
+
+{% endblock %}

@@ -68,4 +68,32 @@
     </form>
 
 </div>
+<hr>
+
+<div>
+
+    <h3>Issues</h3>
+    {% if issues %}
+    <ul class="list-group">
+        {% for issue in issues %}
+            <li class="list-group-item list-group-item-success" >
+                <a class="btn btn-link" href="/vsc/projects/{{ project.id }}/issues/{{ issue.id }}">{{ issue.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <hr>
+
+    <form action="{% url 'vsc:issue_create' project.id %}" method="post">
+        {% csrf_token %}
+        <label>Enter new issue name</label><br />
+        <input type="text" name="issue_name" value="" /> <br>
+
+        <label>Enter new issue description</label><br />
+        <input type="text" name="issue_description" value="" /> <br />
+
+        <input type="submit" value="Create issue"/>
+    </form>
+
+</div>
 {% endblock %}

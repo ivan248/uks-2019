@@ -19,4 +19,10 @@ urlpatterns = [
     url(r'^projects/(?P<project_id>[0-9]+)/branches/(?P<branch_id>[0-9]+)/commits$', views.commit_create, name="commit_create"),
     url(r'^projects/(?P<project_id>[0-9]+)/branches/(?P<branch_id>[0-9]+)/commits/(?P<commit_id>[0-9]+)/update$', views.commit_update, name="commit_update"),
     url(r'^projects/(?P<project_id>[0-9]+)/branches/(?P<branch_id>[0-9]+)/commits/(?P<commit_id>[0-9]+)/delete$', views.commit_delete, name="commit_delete"),
+    url(r'^projects/(?P<project_id>[0-9]+)/issues$', views.issue_create, name="issue_create"),
+    url(r'^projects/(?P<project_id>[0-9]+)/issues/(?P<issue_id>[0-9]+)$', views.issue_detail, name="issue_detail"),
+    url(r'^projects/(?P<project_id>[0-9]+)/issues/(?P<issue_id>[0-9]+)/update$', views.issue_update, name="issue_update"),
+    url(r'^projects/(?P<project_id>[0-9]+)/issues/(?P<issue_id>[0-9]+)/delete$', views.issue_delete, name="issue_delete"),
+    url(r'^projects/(?P<project_id>[0-9]+)/issues/(?P<issue_id>[0-9]+)/milestones$', views.milestone_create, name="milestone_create"),
+
 ]
