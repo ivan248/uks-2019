@@ -57,7 +57,10 @@
             </li>
         {% endfor %}
     </ul>
+    {% else %}
+        <p>No branches are available.</p>
     {% endif %}
+
     <hr>
 
     <form action="{% url 'vsc:branch_create' project.id %}" method="post">
@@ -81,6 +84,8 @@
             </li>
         {% endfor %}
     </ul>
+    {% else %}
+        <p>No issues are available.</p>
     {% endif %}
     <hr>
 

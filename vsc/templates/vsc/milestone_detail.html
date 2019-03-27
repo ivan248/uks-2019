@@ -1,0 +1,35 @@
+{% extends 'vsc/base.html' %}
+
+{% block content %}
+
+<h2><span class="text-success">{{milestone.name}} </span>  </h2>
+<hr>
+    <h6> project: <span class="text-primary float-right">{{project.name}} </span> </h6>
+    <h6> issue: <span class="text-primary float-right">{{issue.name}} </span> </h6>
+    <h6> due_date: <span class="text-primary float-right">{{milestone.due_date}} </span> </h6>
+<hr>
+
+<h4> Description </h4>
+<h4 class="text-success"> {{milestone.description}}</h4>
+
+<hr>
+
+<form action="{% url 'vsc:milestone_update' project.id issue.id milestone.id %}" method="post">
+    {% csrf_token %}
+    <label>Enter new milestone name</label><br />
+    <input type="text" name="milestone_name" value="" /><br />
+
+    <label>Enter new milestone description</label><br />
+    <input type="text" name="milestone_description" value="" /><br />
+
+
+    <input type="submit" value="Update milestone"/>
+</form>
+
+<hr>
+
+<form action="{% url 'vsc:milestone_delete' project.id issue.id milestone.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete milestone"/>
+</form>
+{% endblock %}

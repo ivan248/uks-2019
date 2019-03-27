@@ -1,0 +1,36 @@
+{% extends 'vsc/base.html' %}
+
+{% block content %}
+
+<h2><span class="text-success">{{label.name}} </span>  </h2>
+<hr>
+
+    <h6> color: <span class="text-primary float-right">{{label.color}} </span> </h6>
+<hr>
+
+<h4> Description </h4>
+<h4 class="text-success"> {{label.description}}</h4>
+
+<hr>
+
+<form action="{% url 'vsc:label_update' label.id %}" method="post">
+    {% csrf_token %}
+    <label>Enter new label name</label><br />
+    <input type="text" name="label_name" value="" /><br />
+
+    <label>Enter new label description</label><br />
+    <input type="text" name="label_description" value="" /><br />
+
+    <label>Enter new label color</label><br />
+    <input type="text" name="label_color" value="" /><br />
+
+    <input type="submit" value="Update label"/>
+</form>
+
+<hr>
+
+<form action="{% url 'vsc:label_delete' label.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete label"/>
+</form>
+{% endblock %}

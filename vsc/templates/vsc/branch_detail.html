@@ -31,6 +31,8 @@
             </li>
         {% endfor %}
     </ul>
+    {% else %}
+        <p>No commits are available.</p>
     {% endif %}
     <hr>
     <form action="{% url 'vsc:commit_create' project.id branch.id %}" method="post">
