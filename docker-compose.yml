@@ -23,6 +23,8 @@ services:
       - db
       - es
       - kibana
+    links:
+      - redis
 
 # Nginx as a web server and reverse proxy
   nginx:
@@ -35,6 +37,13 @@ services:
       - ./static:/code/vsc_app/static #must be same as web!
     depends_on:
       - web
+
+# redis as a Django cache store
+  redis:
+    image: redis
+    container_name: vsc_app_redis
+    expose:
+      - '6379'
 
 # ELK stack for logging
 # For searching and indexing data
